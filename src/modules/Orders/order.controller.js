@@ -204,13 +204,11 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 		message: "<h1> please find your invoice below </h1>",
 		attachments: [{ path: `./Files/${orderCode}.pdf` }],
 	});
-	return res
-		.status(201)
-		.json({
-			message: "Done",
-			orderDB,
-			checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
-		});
+	return res.status(201).json({
+		message: "Done",
+		orderDB,orderQr,
+		checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
+	});
 });
 // ==================== from  cart to user Api ==============================
 
@@ -395,13 +393,11 @@ export const fromCartToOrder = asyncHandler(async (req, res, next) => {
 		attachments: [{ path: `./Files/${orderCode}.pdf` }],
 	});
 
-	return res
-		.status(201)
-		.json({
-			message: "Done",
-			orderDB,
-			checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
-		});
+	return res.status(201).json({
+		message: "Done",
+		orderDB,orderQr,
+		checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
+	});
 });
 
 // ============================= success payment  ===================
@@ -457,3 +453,4 @@ export const cancelPayment = asyncHandler(async (req, res, next) => {
 	}
 	res.status(200).json({ message: "done", order });
 });
+   

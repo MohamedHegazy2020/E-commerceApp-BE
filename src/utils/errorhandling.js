@@ -17,9 +17,9 @@ export const globalResponse = (err, req, res, next) => {
 	if (err) {
 		// console.log({ err });
 
-		if(req.error){
-			return res.status(err['cause']||500).json({ErrorMsg:req.error})
+		if(req.error){ 
+			return res.status(err ['cause']||500).json({ErrorMsg:req.error})
 		}
 		return res.status(err["cause"] || 500).json({ ErrorMsg: err.message });
-	}
+	} 
 };

@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
 			default: "Offline",
 			enum: ["Online", "Offline"],
 		},
+		isSoftDeleted: {
+			type: Boolean,
+			default: false,
+		},
 		gender: {
 			type: String,
 			default: "Not specified",

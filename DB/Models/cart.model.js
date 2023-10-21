@@ -1,6 +1,7 @@
 // const { Schema, model } = ("mongoose");
 
 import mongoose, { Schema, model } from "mongoose";
+import { productModel } from "./product.model.js";
 
 const cartSchema = new Schema(
 	{
@@ -16,7 +17,7 @@ const cartSchema = new Schema(
 					ref: "Product",
 					required: true,
 				},
-				quantity: {      
+				quantity: {
 					type: Number,
 					required: true,
 				},
@@ -29,5 +30,7 @@ const cartSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+
 
 export const cartModel = model("Cart", cartSchema) || mongoose.models("Cart");

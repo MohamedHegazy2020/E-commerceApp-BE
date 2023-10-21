@@ -10,7 +10,7 @@ import otpGenerator from "otp-generator";
 
 // ================== SignUp ========================
 export const signUp = asyncHandler(async (req, res, next) => {
-	const { userName, email, password, address, gender, age, phoneNumber } =
+	const { userName, email, password, address, gender, age, phoneNumber,role } =
 		req.body;
 
 	// ------------- check if user exist------------
@@ -52,7 +52,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
 		password,
 		address,
 		gender,
-		age,
+		age,role,
 		phoneNumber,
 	});
 	const savedUser = await user.save();
@@ -92,7 +92,7 @@ export const logIn = asyncHandler(async (req, res, next) => {
 	}
 
 
-	console.log(compareSync(password ,"$2b$08$BwcFvrccbP7EdVqeSlYJbeB.b9YdVq6eVmm4Hpo1KzckKcjHb2yQK"));
+	
 	const isPassMatch = pkg.compareSync(password, user.password)
 	
 	if (!isPassMatch) {

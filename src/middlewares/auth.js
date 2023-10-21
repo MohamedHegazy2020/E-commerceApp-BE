@@ -15,6 +15,7 @@ export const isAuth = (roles) => {
 			}
 
 			const splitedToken = authorization.split("__")[1];
+			// console.log(splitedToken);
 
 			try {
 				const decodedData = verifyToken({

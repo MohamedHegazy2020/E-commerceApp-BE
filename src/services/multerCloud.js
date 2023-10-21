@@ -10,12 +10,15 @@ export const multerCloudFunction = (allowedExtensionsArr) => {
 
 	//================================== File Filter =============================
 	const fileFilter = function (req, file, cb) {
-		if (allowedExtensionsArr.includes(file.mimetype)) {
+		if (!allowedExtensionsArr.includes(file.mimetype)) {
 			console.log(file);
-			return cb(null, true);
+			cb(new Error("invalid extension", { cause: 400 }), false);
+		}
+		if (file.size>11000000) {
+			cb(new Error("large file", { cause: 400 }), false);
 		}
 
-		cb(new Error("invalid extension", { cause: 400 }), false);
+		return cb(null, true);
 	};
 
 	const fileUpload = multer({

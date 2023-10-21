@@ -78,7 +78,7 @@ export const createCategory = asyncHandler(async (req, res, next) => {
 
 	const category = await categoryModel
 		.create(categoryObject)
-		.catch((err) => next(new Error(err, { cause: 400 })));
+		
 
 	return res.status(201).json({ message: "Done", category });
 });
@@ -94,7 +94,7 @@ export const updateCategory = asyncHandler(async (req, res, next) => {
 	}
 
 	if (name) {
-		if (category.name == name.toLowerCase()) {
+		if (category.name == name) {
 			return next(new Error("same to old name", { cause: 400 }));
 		}
 		const isNameDuplicate = await categoryModel.findOne({ name });
@@ -134,7 +134,7 @@ export const deleteCategory = asyncHandler(async (req, res, next) => {
 	const category = await categoryModel
 		.findByIdAndDelete(categoryId)
 		.populate(["subCategories", "products"]);
-	console.log(category);
+	console.log(category);  
 	if (!category) {
 		return next(new Error("in-valid category id"));
 	}
@@ -145,7 +145,6 @@ export const deleteCategory = asyncHandler(async (req, res, next) => {
 			categoryId,
 		});
 
-		console.log(deleteRelatedSubCategory);
 		if (!deleteRelatedSubCategory.deletedCount) {
 			return next(new Error("delete related subCategories failed"));
 		}

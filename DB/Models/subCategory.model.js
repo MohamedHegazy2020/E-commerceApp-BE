@@ -30,8 +30,8 @@ const subCayegorySchema = new mongoose.Schema(
 	{ timestamps: true,
 	toJSON:{virtuals:true},toObject:{virtuals:true}, }
 );
-subCayegorySchema.virtual("Brands", {
-	ref: "Brand",
+subCayegorySchema.virtual("products", {
+	ref: "Product",
 	foreignField: "subCategoryId",
 	localField: "_id",
 });

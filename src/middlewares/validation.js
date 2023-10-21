@@ -22,7 +22,8 @@ export const generalFields = {
       'string.pattern.base': 'Password regex fail',
     })
     .required(),
-    _id:Joi.string().custom(objectIdValidation)
+    _id:Joi.string().custom(objectIdValidation) ,
+    token:Joi.string().regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
 }
 
 export const validationCoreFunction = (schema) => {

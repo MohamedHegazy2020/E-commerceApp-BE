@@ -3,20 +3,20 @@ import * as couponController from "./coupon.controller.js";
 import { validationCoreFunction } from "../../middlewares/validation.js";
 import * as validationSchema from "./coupon.validationSchemas.js";
 import { isAuth } from "../../middlewares/auth.js";
-import { systemRoles } from "../../utils/systemRoles.js";
+import { couponRoles } from "./coupon.endpoints.js";
 
 const router = Router();
 
 router.post(
 	"/",
-	isAuth([systemRoles.ADMIN, systemRoles.SUPER_ADMIN]),
+	isAuth(couponRoles.addCoupon),
 
 	validationCoreFunction(validationSchema.addCouponSchema),
 	couponController.addCoupon
 );
 router.delete(
 	"/",
-	isAuth([systemRoles.ADMIN, systemRoles.SUPER_ADMIN]),
+	isAuth(couponRoles.deleteCoupon),
 
 	validationCoreFunction(validationSchema.deleteCoupnSchema),
 	couponController.deleteCoupon
@@ -24,7 +24,7 @@ router.delete(
 
 router.patch(
 	"/assignUserToCoupon",
-	isAuth([systemRoles.ADMIN, systemRoles.SUPER_ADMIN]),
+	isAuth(couponRoles.assignUserToCoupon),
 
 	validationCoreFunction(validationSchema.assignUserSchema),
 	couponController.assignUserToCoupon

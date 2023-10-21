@@ -39,8 +39,13 @@ const brandSchema = new mongoose.Schema(
 	},
 	{
 		timestamps: true,
+		toJSON: { virtuals: true },toObject: { virtuals: true }
 	}
 );
-
+brandSchema.virtual("products", {
+	ref: "Product",
+	foreignField: "brandId",
+	localField: "_id",
+});
 export const brandModel =
 	mongoose.model("Brand", brandSchema) || mongoose.models("Brand");

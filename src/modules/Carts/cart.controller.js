@@ -81,6 +81,7 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
 	if (!userCart) {
 		return next(new Error("can't find this product in this cart"));
 	}
+
 	userCart.products.forEach(async (elem) => {
 		if (elem.productId == productId) {
 			userCart.products.splice(userCart.products.indexOf(elem), 1);
@@ -90,6 +91,21 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
 		}
 	});
 
-	await userCart.updateOne();
+	await userCart.save();
 	return res.status(200).json({ message: "Done", userCart });
+});
+
+// ================= clear  cart ============================
+
+export const clearCart = asyncHandler(async (req, res, next) => {
+	const userId = req.authUser._id;
+	const cart = await cartModel.findOne({ userId });
+	if (!cart) {
+		return next(new Error("cart doesn't exist"));
+	}
+	cart.products = [];
+	cart.subTotal = 0;
+	await cart.save()
+	return res.status(200).json({ message: "Done", cart });
+
 });

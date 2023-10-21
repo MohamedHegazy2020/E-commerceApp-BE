@@ -5,17 +5,15 @@ import { generalFields } from "../../middlewares/validation.js";
 
 export const createCategorySchema = {
 	body: Joi.object({
-		name: Joi.string().min(4).max(15),
-	})
-		.required()
-		.options({ presence: "required" }),
+		name: Joi.string().trim().lowercase().required(),
+	}).required(),
 };
 
 // ====================== update category Schema ===================
 
 export const updateCategorySchema = {
 	body: Joi.object({
-		name: Joi.string().min(4).max(10),
+		name: Joi.string().trim().lowercase().optional(),
 	}).required(),
 	query: Joi.object({
 		categoryId: generalFields._id.required(),

@@ -36,7 +36,7 @@ export const multerFunction = (allowedExtensionsArr, customPath) => {
 
   //================================== File Filter =============================
   const fileFilter = function (req, file, cb) {
-
+console.log(file);
     if (allowedExtensionsArr.includes(file.mimetype)) {
       return cb(null, true)
     }

@@ -36,7 +36,7 @@ categorySchema.virtual("subCategories", {
 categorySchema.virtual("products", {
 	ref: "Product",
 	foreignField: "categoryId",
-	localField: "_id",
+	localField: "_id", 
 });
 
 

@@ -29,7 +29,6 @@ router.put(
 	validationCoreFunction(updateCategorySchema),
 	categoryController.updateCategory
 );
-
 router.delete(
 	"/",
 	isAuth(categoryRoles.deleteCategory),

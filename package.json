@@ -21,7 +21,7 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
-    "mongoose": "^7.6.2",
+    "mongoose": "^7.6.3",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.2",
     "node-schedule": "^2.1.1",
