@@ -5,7 +5,7 @@ export const addCoupnSchema = {
 	body: Joi.object({
 		productId: generalFields._id.required(),
 		quantity: Joi.number().required(),
-		address: Joi.array().items(Joi.string()).required(),
+		address: Joi.string().required(),
 		phoneNumbers: Joi.string()
 			.regex(/^01[0125][0-9]{8}$/)
 			.required(),
@@ -17,7 +17,8 @@ export const addCoupnSchema = {
 
 export const fromCartToOrder = {
 	body: Joi.object({
-		address: Joi.array().items(Joi.string()).required(),
+		address: Joi.string().required(),
+		
 		phoneNumbers: Joi.string()
 			.regex(/^01[0125][0-9]{8}$/)
 			.required(),

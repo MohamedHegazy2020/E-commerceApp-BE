@@ -43,7 +43,7 @@ const productSchema = new mongoose.Schema(
 
 		// ======= Related Ids section =======
 		createdBy: {
-			type:mongoose.Types.ObjectId,
+			type: mongoose.Types.ObjectId,
 			ref: "User",
 			required: true, // TODO: convert into true after creating usermodel
 		},
@@ -86,7 +86,12 @@ const productSchema = new mongoose.Schema(
 			},
 		],
 		customId: String,
-	},         
+		totalRates: {
+			type: Number,
+			default: 0,
+			required: true,
+		},
+	},
 	{ timestamps: true }
 );
 

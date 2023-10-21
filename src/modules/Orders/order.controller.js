@@ -25,7 +25,6 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 		couponCode,
 	} = req.body;
 
-	// console.log(req.body);
 
 	// coupon check
 
@@ -44,7 +43,6 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 		}
 
 		req.coupon = coupon;
-		// console.log(req.coupon);
 	}
 
 	// check products

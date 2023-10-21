@@ -10,8 +10,8 @@ const reviewSchema = new mongoose.Schema({
 		required: true,
 		ref: "Product",
 	},
-	text: { type: String, required: true },
-	rating: { type: Number, required: true },
+	comment: { type: String },
+	rate: { type: Number, required: true  ,enum:[1,2,3,4,5] , min:1 ,max:5},
 });
 
 const reviewModel = model("Review", reviewSchema) || mongoose.models("Review");

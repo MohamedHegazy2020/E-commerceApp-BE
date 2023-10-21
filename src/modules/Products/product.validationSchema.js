@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { generalFields } from "./../../middlewares/validation.js";
 // ======== add product Schema ==========================
-const addProductSchema = {
+export const addProductSchema = {
 	body: Joi.object({
 		title: Joi.string().required(),
 		desc: Joi.string().required(),
@@ -18,7 +18,7 @@ const addProductSchema = {
 };
 
 // ======== update product Schema ==========================
-const updateProductSchema = {
+export const updateProductSchema = {
 	body: Joi.object({
 		title: Joi.string().optional(),
 		desc: Joi.string().optional(),
