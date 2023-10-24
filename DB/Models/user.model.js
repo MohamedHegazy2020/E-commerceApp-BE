@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema(
 		age: Number,
 		token: String,
 		forgetCode: String,
+		provider:{type:String ,default:'system' , enum:['google' , 'system']}
 	},
 	{
 		timestamps: true,

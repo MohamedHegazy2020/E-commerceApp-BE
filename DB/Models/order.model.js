@@ -54,11 +54,11 @@ const orderSchema = new Schema(
     orderStatus: {
       type: String,
       enum: [
-        'pending',//status default credit payment
         'confirmed',// status after credit payment 
         'placed',//default if cash payment
-        'preparation',// if order ready from store
         'on way',
+        'rejected',
+        'pending',
         'delivered',
         'canceled',
       ],

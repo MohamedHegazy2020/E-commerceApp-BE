@@ -2,10 +2,12 @@ import { connectionDB } from "../DB/connection.js";
 import * as allRouters from "./modules/index.routes.js";
 import { cahangeCouponStatusCron } from "./utils/crons.js";
 import { globalResponse } from "./utils/errorhandling.js";
+import cors from 'cors'
 
 export const initiateApp = (express, app) => {
 	const port = process.env.port || 5000;
 	app.use(express.json());
+	app.use(cors())
 	connectionDB();
 
 	app.use("/category", allRouters.categoryRouter);

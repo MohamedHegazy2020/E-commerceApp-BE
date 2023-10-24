@@ -7,10 +7,12 @@ import { generateToken, verifyToken } from "./../../utils/tokenFunctions.js";
 import pkg, { compareSync } from "bcrypt";
 import { nanoid } from "nanoid";
 import otpGenerator from "otp-generator";
+import { OAuth2Client } from "google-auth-library";
+import { systemRoles } from "../../utils/systemRoles.js";
 
 // ================== SignUp ========================
 export const signUp = asyncHandler(async (req, res, next) => {
-	const { userName, email, password, address, gender, age, phoneNumber,role } =
+	const { userName, email, password, address, gender, age, phoneNumber, role } =
 		req.body;
 
 	// ------------- check if user exist------------
@@ -52,7 +54,8 @@ export const signUp = asyncHandler(async (req, res, next) => {
 		password,
 		address,
 		gender,
-		age,role,
+		age,
+		role,
 		phoneNumber,
 	});
 	const savedUser = await user.save();
@@ -91,12 +94,10 @@ export const logIn = asyncHandler(async (req, res, next) => {
 		return next(new Error("not confirmed email", { cause: 400 }));
 	}
 
+	const isPassMatch = pkg.compareSync(password, user.password);
 
-	
-	const isPassMatch = pkg.compareSync(password, user.password)
-	
 	if (!isPassMatch) {
-	  return next(new Error('invalid password', { cause: 400 }))
+		return next(new Error("invalid password", { cause: 400 }));
 	}
 
 	const token = generateToken({
@@ -147,7 +148,8 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
 		to: email,
 		subject: "reset password",
 		message: emailTemplate({
-			subject: "reset password",otp
+			subject: "reset password",
+			otp,
 		}),
 	});
 
@@ -160,12 +162,10 @@ export const forgetPassword = asyncHandler(async (req, res, next) => {
 		{ forgetCode: otp },
 		{ new: true }
 	);
-	return res
-		.status(200)
-		.json({
-			message: "check your email for otp code ",
-			resetPasswordToken: token,
-		});
+	return res.status(200).json({
+		message: "check your email for otp code ",
+		resetPasswordToken: token,
+	});
 });
 
 // ======================= reset password =========================
@@ -177,8 +177,8 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
 		token,
 		signature: process.env.RESET_PASSWORD_SIGNATURE,
 	});
-	if(otp!=decode.otp){
-		return next(new Error('invalid resetPasswordToken'))
+	if (otp != decode.otp) {
+		return next(new Error("invalid resetPasswordToken"));
 	}
 	const user = await userModel.findOne({
 		email: decode?.email,
@@ -198,3 +198,103 @@ export const resetPassword = asyncHandler(async (req, res, next) => {
 		updatedUser,
 	});
 });
+
+// ========================= loginWithGoogle ========================
+
+export const loginWithGoogle = asyncHandler(async (req, res, next) => {
+	const { idToken, provider } = req.body;
+	const client = new OAuth2Client();
+	async function verify() {
+		const ticket = await client.verifyIdToken({
+			idToken,
+			audience:
+				"1051372324614-nk29u4m2heknfp1u9n5hfvokr8gtndhm.apps.googleusercontent.com",
+			// Specify the CLIENT_ID of the app that accesses the backend
+			// Or, if multiple clients access the backend:
+			//[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+		});
+		const payload = ticket.getPayload();
+		console.log(payload);
+		return payload;
+	}
+	const { email_verified, email, name } = await verify();
+	if (!email_verified) {
+		return next(new Error("invalid email", { cause: 400 }));
+	}
+	const user = await userModel.findOne({ email });
+	// login
+	if (user && user.provider == provider) {
+		const token = generateToken({
+			payload: {
+				email,
+				_id: user._id,
+				role: user.role,
+			},
+			signature: process.env.SIGN_IN_TOKEN_SECRET,
+			expiresIn: "1h",
+		});
+
+		const loggedUser = await userModel.findByIdAndUpdate(
+			user._id,
+			{
+				token,
+				status: "Online",
+			},
+			{ new: true }
+		);
+
+		return res.status(200).json({ message: "Login Done", loggedUser, token });
+	}else if(user&&user.provider!=provider){
+		const token = generateToken({
+			payload: {
+				email,
+				_id: user._id,
+				role: user.role,
+			},
+			signature: process.env.SIGN_IN_TOKEN_SECRET,
+			expiresIn: "1h",
+		});
+
+		const loggedUser = await userModel.findByIdAndUpdate(
+			user._id,
+			{
+				provider ,
+				token,
+				status: "Online",
+			},
+			{ new: true }
+			);
+			return res.status(200).json({ message: "Login Done", loggedUser, token });
+	}
+
+
+	// signUp
+	if(!user){
+		const userObj = {
+			userName: name,
+			email,
+			password: nanoid(6),
+			provider: "google",
+			isConfirmed: true,
+			phoneNumber: "  ",
+			role: systemRoles.USER,
+		};
+	
+		const newUser = await userModel.create(userObj);
+		const token = generateToken({
+			payload: {
+				email:newUser.email,
+				_id: newUser._id,
+				role: newUser.role,
+			},
+			signature: process.env.SIGN_IN_TOKEN_SECRET,
+			expiresIn: "1h",
+		});
+
+		newUser.token = token
+		newUser.status = "Online"
+		const loggedUser = await newUser.save()
+
+	res.status(200).json({ message: "Done" ,loggedUser  ,token});
+}});
+      

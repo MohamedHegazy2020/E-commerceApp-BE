@@ -34,15 +34,13 @@ export const addReview = asyncHandler(async (req, res, next) => {
 	}
 
 	const allReviews = await reviewModel.find({ productId });
-	let sumOfRates ;
+	let sumOfRates = 0
 
 	for (const review of allReviews) {
-		// console.log(review.rate);
 		sumOfRates += review.rate;
 	}
-	console.log(sumOfRates);
-	const totalRates = Number(sumOfRates / allReviews.length).toFixed(2);
-	await product.updateOne({ totalRates }, { new: true });
+	product.totalRates = Number(sumOfRates / allReviews.length).toFixed(2);
+	await product.save();
 
 	return res.status(200).json({ message: "Done", reviewDB, product });
 });

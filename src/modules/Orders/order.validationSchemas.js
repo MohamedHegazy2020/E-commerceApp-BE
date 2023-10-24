@@ -29,3 +29,10 @@ export const fromCartToOrder = {
 		cartId: generalFields._id.required(),
 	}).required(),
 };
+// ==================== deliver order Schema ==============================
+
+export const deliverOrderSchema ={
+	query:Joi.object({
+		orderId:generalFields._id.required()
+	}).required()
+}

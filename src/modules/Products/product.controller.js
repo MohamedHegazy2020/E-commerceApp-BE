@@ -206,7 +206,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
 export const getAllProducts = asyncHandler(async (req, res, next) => {
 	const { page, size } = req.query;
 	const { limit, skip } = paginationFunction({ page, size });
-	const products = await productModel.find().limit(limit).skip(skip);
+	const products = await productModel.find().limit(limit).skip(skip).populate('Reviews');
 
 	return res.status(200).json({ message: "Done", page, products });
 });

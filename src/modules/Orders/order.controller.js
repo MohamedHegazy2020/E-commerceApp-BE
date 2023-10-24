@@ -25,7 +25,6 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 		couponCode,
 	} = req.body;
 
-
 	// coupon check
 
 	if (couponCode) {
@@ -204,7 +203,8 @@ export const createOrder = asyncHandler(async (req, res, next) => {
 	});
 	return res.status(201).json({
 		message: "Done",
-		orderDB,orderQr,
+		orderDB,
+		orderQr,
 		checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
 	});
 });
@@ -393,7 +393,8 @@ export const fromCartToOrder = asyncHandler(async (req, res, next) => {
 
 	return res.status(201).json({
 		message: "Done",
-		orderDB,orderQr,
+		orderDB,
+		orderQr,
 		checkOutUrl: paymentMethod == "card" ? orderSession.url : "",
 	});
 });
@@ -451,4 +452,23 @@ export const cancelPayment = asyncHandler(async (req, res, next) => {
 	}
 	res.status(200).json({ message: "done", order });
 });
-   
+
+// ======================= deliver order =====================
+
+export const deliverOrder = asyncHandler(async (req, res, next) => {
+	const { orderId } = req.query;
+
+	const order = await orderModel.findOneAndUpdate(
+		{
+			_id: orderId,
+			orderStatus: { $nin: ["rejected", "pending", "delivered", "canceled"] },
+		},
+		{ orderStatus: "delivered" },
+		{ new: true }
+	);
+
+	if (!order) {
+		return next(new Error("invalid order", { cause: 400 }));
+	}
+	return res.status(200).json({ message: "Done", order });
+});

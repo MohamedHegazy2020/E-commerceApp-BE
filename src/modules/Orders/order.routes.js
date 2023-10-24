@@ -17,10 +17,16 @@ router.post(
 	"/fromCartToOrder",
 	isAuth(orderRoles.fromCartToOrder),
 	validationCoreFunction(orderValSchema.fromCartToOrder),
-	orderController.fromCartToOrder
+	orderController.fromCartToOrder  
 );
 
 router.patch("/successOrder", orderController.successPayment);
 router.patch("/cancelOrder", orderController.cancelPayment);
+router.patch(
+	"/deliverOrder",
+	isAuth(orderRoles.deliverOrder),
+	validationCoreFunction(orderValSchema.deliverOrderSchema),
+	orderController.deliverOrder
+);
 
 export default router;

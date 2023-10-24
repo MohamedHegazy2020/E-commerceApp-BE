@@ -26,5 +26,6 @@ router.post(
 	authController.forgetPassword
 );
 router.post("/reset/:token",validationCoreFunction(authValSchema.resetPasswordSchema), authController.resetPassword);
+router.post('/loginWithGoogle' , authController.loginWithGoogle)
 
 export default router;
