@@ -12,7 +12,7 @@ export const getAllCategories = asyncHandler(async (req, res, next) => {
 
 	const allCategories = await categoryModel
 		.find()
-		.populate([{ path: "subCategories", populate: [{ path: "Brands" }] }]);
+		.populate([{ path: "subCategories", populate: [{ path: "products" }] }]);
 
 	return res.json({ message: "done", allCategories });
 

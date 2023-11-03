@@ -1,14 +1,18 @@
+import { createHandler } from "graphql-http/lib/use/express";
 import { connectionDB } from "../DB/connection.js";
 import * as allRouters from "./modules/index.routes.js";
 import { cahangeCouponStatusCron } from "./utils/crons.js";
 import { globalResponse } from "./utils/errorhandling.js";
-import cors from 'cors'
+import cors from "cors";
+import { categorySchema } from "./modules/Categories/GraphQl/graphqlCategorySchema.js";
 
 export const initiateApp = (express, app) => {
 	const port = process.env.port || 5000;
 	app.use(express.json());
-	app.use(cors())
+	app.use(cors());
 	connectionDB();
+
+	app.use("/graphqlCategory", createHandler({ schema: categorySchema }));
 
 	app.use("/category", allRouters.categoryRouter);
 	app.use("/subCategory", allRouters.subCategoryRouter);
@@ -25,6 +29,6 @@ export const initiateApp = (express, app) => {
 		return next(new Error("in-valid Routing", { cause: 404 }));
 	});
 	app.use(globalResponse);
-	cahangeCouponStatusCron()
+	cahangeCouponStatusCron();
 	app.listen(port, () => console.log(`your app is listening on port ${port}`));
 };

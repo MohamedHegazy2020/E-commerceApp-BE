@@ -197,7 +197,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
 			product.images = [...newImagesArr];
 		}
 	}
-	await product.save();
+	await product.updateOne();
 	return res
 		.status(200)
 		.json({ message: "Product Updated Successfully ", product });

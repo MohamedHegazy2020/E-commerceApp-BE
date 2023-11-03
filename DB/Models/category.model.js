@@ -19,7 +19,6 @@ const categorySchema = new mongoose.Schema(
 		customId: String,
 		createdBy: {
 			type: mongoose.Types.ObjectId,
-			type: mongoose.Types.ObjectId,
 			ref: "User",
 			required: true,
 		},
