@@ -49,5 +49,5 @@ ORDER_TOKEN='orderToken'
 
 ## API Documentation
 
-You can find the API documentation [here](https://web.postman.co/workspace/896a776a-c58d-470d-8ebf-ceb0d1664ec4/documentation/25920197-bb62bdb2-8a5b-4ac9-99a1-eb2142d27b05)https://web.postman.co/workspace/896a776a-c58d-470d-8ebf-ceb0d1664ec4/documentation/25920197-bb62bdb2-8a5b-4ac9-99a1-eb2142d27b05). It describes the available endpoints, parameters, responses, and examples. You can also use Postman to test the API requests
+You can find the API documentation (https://web.postman.co/workspace/896a776a-c58d-470d-8ebf-ceb0d1664ec4/documentation/25920197-bb62bdb2-8a5b-4ac9-99a1-eb2142d27b05)https://web.postman.co/workspace/896a776a-c58d-470d-8ebf-ceb0d1664ec4/documentation/25920197-bb62bdb2-8a5b-4ac9-99a1-eb2142d27b05). It describes the available endpoints, parameters, responses, and examples. You can also use Postman to test the API requests
 
